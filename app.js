@@ -11,6 +11,7 @@ const orderRoutes = require('./api/rotues/orders');
 const customerRoutes = require('./api/rotues/customer');
 
 const taskController = require('./api/controller/TaskController');
+const customerController = require('./api/controller/CustomerController');
 
 app.use(morgan('dev'));
 
@@ -40,7 +41,19 @@ app.group("/api/v1/task", (router) => {
         .use('*',(req, res, next)=>{
           return res.status(404).json({
               status: 0,
-              message: 'url not found under /api/v1/'
+              message: 'url not found under /api/v1/task'
+          })
+        })
+});
+
+app.group("/api/v1/customer", (router) => {
+  router.get("/all", customerController.getCustomers)
+        .post("/save", customerController.saveCustomer)
+        .get("/:customer_id", customerController.getCustomerDetail)
+        .use('*',(req, res, next)=>{
+          return res.status(404).json({
+              status: 0,
+              message: 'url not found under /api/v1/customer'
           })
         })
 });
